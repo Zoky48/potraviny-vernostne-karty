@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vernostné karty</title>
+  <style>
+    :root{
+      --bg:#eef0f3;
+      --panel:#f4f5f7;
+      --card:#f5f5f5;
+      --main:#1f2a37;
+      --muted:#6b7280;
+      --shadow: 0 12px 18px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --border: rgba(17,24,39,0.08);
+      --accent: #3b82f6;
+      --accent-2: #0ea5e9;
+      --toggle-bg: #fff;
+      --toggle-border: rgba(17,24,39,0.06);
+      --navy:#1f729d;
+      --label:#1e293b;
+      --soft:#dfe4ea;
+    }
+
+    body.dark{
+      --bg:#0f172a;
+      --panel:#111827;
+      --card:#1f2937;
+      --main:#e5eefc;
+      --muted:#b5c0d0;
+      --shadow: 0 12px 20px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.22);
+      --border: rgba(148,163,184,0.18);
+      --accent: #60a5fa;
+      --accent-2: #38bdf8;
+      --toggle-bg: #0b1220;
+      --toggle-border: rgba(148,163,184,0.2);
+      --navy:#7ec8ff;
+      --label:#ebf2ff;
+      --soft:#1e293b;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--main);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 48px;
+    }
+
+    .app {
+      width: min(100%, 1040px);
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes flip {
+      from {
+        transform: rotateY(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: rotateY(360deg);
+        opacity: 1;
+      }
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 16px;
+      height: 70px;
+      animation: slideInDown 0.6s ease-out;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-weight: 800;
+      font-size: clamp(2rem, 2.2vw, 3rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--main);
+    }
+
+    .brand .icon {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--main);
+      opacity: 0.9;
+      animation: slideInDown 0.8s ease-out 0.1s both;
+    }
+
+    .brand span:last-child {
+      animation: slideInDown 0.8s ease-out 0.2s both;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      box-shadow: var(--shadow);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--main);
+      cursor: pointer;
+      font-weight: 700;
+      user-select: none;
+      transition: all 0.3s ease;
+      animation: slideInDown 0.6s ease-out;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+    }
+
+    .theme-toggle:active {
+      transform: translateY(-50%) scale(0.98);
+    }
+
+    .theme-toggle .dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.3);
+      animation: spin 0.4s ease-in-out;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-top: 8px;
+    }
+
+    .section {
+      margin-top: 8px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .section:nth-child(1) { animation-delay: 0.1s; }
+    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(3) { animation-delay: 0.3s; }
+    .section:nth-child(4) { animation-delay: 0.4s; }
+    .section:nth-child(5) { animation-delay: 0.5s; }
+    .section:nth-child(6) { animation-delay: 0.6s; }
+
+    .section-header {
+      margin: 0 0 12px 0;
+      padding-left: 8px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--main);
+      letter-spacing: -0.04em;
+      animation: slideInUp 0.5s ease-out;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 112px;
+      padding: 18px 28px 18px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: slideInUp 0.5s ease-out both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.3s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.4s; }
+    .card:nth-child(9) { animation-delay: 0.45s; }
+    .card:nth-child(10) { animation-delay: 0.5s; }
+    .card:nth-child(11) { animation-delay: 0.55s; }
+    .card:nth-child(12) { animation-delay: 0.6s; }
+    .card:nth-child(13) { animation-delay: 0.65s; }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+      border-color: rgba(59,130,246,0.3);
+    }
+
+    .card:active {
+      transform: translateY(-2px) scale(0.99);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 10px;
+      height: 100%;
+      background: var(--accent, #3b82f6);
+      border-radius: 0 20px 20px 0;
+      opacity: 0.92;
+      transform-origin: bottom;
+      animation: slideInRight 0.4s ease-out 0.2s both;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: scaleY(0);
+        opacity: 0;
+      }
+      to {
+        transform: scaleY(1);
+        opacity: 0.92;
+      }
+    }
+
+    .card .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .shop-logo {
+      width: 80px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      color: #fff;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1);
+      text-transform: uppercase;
+      animation: scaleIn 0.5s ease-out 0.3s both;
+    }
+
+    .shop-name {
+      font-weight: 800;
+      font-size: clamp(1.7rem, 2vw, 3rem);
+      letter-spacing: -0.06em;
+      position: relative;
+      z-index: 1;
+      color: var(--main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInUp 0.5s ease-out 0.25s both;
+    }
+
+    .card[data-accent="blue"] { --accent:#3b82f6; }
+    .card[data-accent="green"] { --accent:#22c55e; }
+    .card[data-accent="red"] { --accent:#ef4444; }
+    .card[data-accent="orange"] { --accent:#f59e0b; }
+    .card[data-accent="cyan"] { --accent:#06b6d4; }
+    .card[data-accent="purple"] { --accent:#8b5cf6; }
+    .card[data-accent="amber"] { --accent:#f59e0b; }
+    .card[data-accent="pink"] { --accent:#ec4899; }
+    .card[data-accent="grey"] { --accent:#6b7280; }
+    .card[data-accent="teal"] { --accent:#14b8a6; }
+
+    .shop-logo.kaufland { background: linear-gradient(135deg, #1d4ed8, #2a6df6); }
+    .shop-logo.tesco { background: linear-gradient(135deg,#0f3da9,#0b4bc5); }
+    .shop-logo.lidl { background: linear-gradient(135deg,#0f7bd5,#0b5ecb); }
+    .shop-logo.billa { background: linear-gradient(135deg,#e63d29,#d62d1d); }
+    .shop-logo.coop { background: linear-gradient(135deg,#0f766e,#14b8a6); }
+    .shop-logo.terno { background: linear-gradient(135deg,#4f46e5,#7c3aed); }
+    .shop-logo.kraj { background: linear-gradient(135deg,#1d4ed8,#2563eb); }
+    .shop-logo.fresh { background: linear-gradient(135deg,#16a34a,#22c55e); }
+    .shop-logo.koruna { background: linear-gradient(135deg,#ef4444,#dc2626); }
+    .shop-logo.cba { background: linear-gradient(135deg,#0f766e,#14b8a6); }
+    .shop-logo.moj { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+    .shop-logo.metro { background: linear-gradient(135deg,#111827,#374151); }
+    .shop-logo.yeme { background: linear-gradient(135deg,#a16207,#f59e0b); }
+    .shop-logo.dm { background: linear-gradient(135deg,#0ea5e9,#06b6d4); }
+    .shop-logo.teta { background: linear-gradient(135deg,#ef4444,#b91c1c); }
+    .shop-logo.drog { background: linear-gradient(135deg,#06b6d4,#0284c7); }
+    .shop-logo.drmax { background: linear-gradient(135deg,#2563eb,#1d4ed8); }
+    .shop-logo.benu { background: linear-gradient(135deg,#0ea5e9,#0284c7); }
+    .shop-logo.pilulka { background: linear-gradient(135deg,#f97316,#ea580c); }
+    .shop-logo.notino { background: linear-gradient(135deg,#7c3aed,#9333ea); }
+    .shop-logo.parfum { background: linear-gradient(135deg,#ec4899,#db2777); }
+    .shop-logo.douglas { background: linear-gradient(135deg,#a78bfa,#7c3aed); }
+    .shop-logo.hm { background: linear-gradient(135deg,#0f172a,#1e293b); }
+    .shop-logo.reserved { background: linear-gradient(135deg,#d97706,#f59e0b); }
+    .shop-logo.cropp { background: linear-gradient(135deg,#f43f5e,#e11d48); }
+    .shop-logo.house { background: linear-gradient(135deg,#f97316,#f59e0b); }
+    .shop-logo.sinsay { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .shop-logo.mohito { background: linear-gradient(135deg,#0ea5e9,#0284c7); }
+    .shop-logo.zara { background: linear-gradient(135deg,#111827,#374151); }
+    .shop-logo.bershka { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.pull { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .shop-logo.strad { background: linear-gradient(135deg,#f43f5e,#e11d48); }
+    .shop-logo.ca { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .shop-logo.newy { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.takko { background: linear-gradient(135deg,#ef4444,#b91c1c); }
+    .shop-logo.deich { background: linear-gradient(135deg,#0ea5e9,#0284c7); }
+    .shop-logo.ccc { background: linear-gradient(135deg,#f43f5e,#e11d48); }
+    .shop-logo.humanic { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.bata { background: linear-gradient(135deg,#0f172a,#334155); }
+    .shop-logo.sportisimo { background: linear-gradient(135deg,#14b8a6,#0f766e); }
+    .shop-logo.decathlon { background: linear-gradient(135deg,#ef4444,#dc2626); }
+    .shop-logo.exisport { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+    .shop-logo.intersport { background: linear-gradient(135deg,#16a34a,#22c55e); }
+    .shop-logo.fourf { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.adidas { background: linear-gradient(135deg,#0f172a,#1e293b); }
+    .shop-logo.nike { background: linear-gradient(135deg,#111827,#334155); }
+    .shop-logo.puma { background: linear-gradient(135deg,#ef4444,#b91c1c); }
+    .shop-logo.under { background: linear-gradient(135deg,#1d4ed8,#2563eb); }
+    .shop-logo.footshop { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.kea { background: linear-gradient(135deg,#1d4ed8,#2563eb); }
+    .shop-logo.jysk { background: linear-gradient(135deg,#1d4ed8,#2563eb); }
+    .shop-logo.mobelix { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .shop-logo.xxxl { background: linear-gradient(135deg,#f59e0b,#d97706); }
+    .shop-logo.kinekus { background: linear-gradient(135deg,#0ea5e9,#0f766e); }
+    .shop-logo.mountfield { background: linear-gradient(135deg,#22c55e,#15803d); }
+    .shop-logo.hornbach { background: linear-gradient(135deg,#f59e0b,#d97706); }
+    .shop-logo.obi { background: linear-gradient(135deg,#ef4444,#dc2626); }
+    .shop-logo.planeo { background: linear-gradient(135deg,#0ea5e9,#0284c7); }
+    .shop-logo.datart { background: linear-gradient(135deg,#0f172a,#334155); }
+    .shop-logo.nay { background: linear-gradient(135deg,#8b5cf6,#7c3aed); }
+    .shop-logo.alza { background: linear-gradient(135deg,#2563eb,#1d4ed8); }
+    .shop-logo.zvierata { background: linear-gradient(135deg,#fbbf24,#f59e0b); }
+    .shop-logo.slovnaft { background: linear-gradient(135deg,#0ea5e9,#0369a1); }
+    .shop-logo.omv { background: linear-gradient(135deg,#f59e0b,#d97706); }
+    .shop-logo.shell { background: linear-gradient(135deg,#f59e0b,#f97316); }
+    .shop-logo.orlen { background: linear-gradient(135deg,#ef4444,#dc2626); }
+    .shop-logo.tchibo { background: linear-gradient(135deg,#14b8a6,#0f766e); }
+
+    .shop-logo span {
+      font-size: 0.78rem;
+      transform: scale(0.9);
+      display: inline-block;
+    }
+
+    .card .badge {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 48px;
+      border-radius: 10px 10px 0 0;
+      background: var(--accent);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    /* Modal Animations */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(2px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-panel {
+      width: min(90vw, 420px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      padding: 26px 22px 20px;
+      position: relative;
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 16px;
+      top: 14px;
+      border: none;
+      background: transparent;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--main);
+      line-height: 1;
+      transition: all 0.2s ease;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .modal-close:hover {
+      background: rgba(59, 130, 246, 0.1);
+      transform: rotate(90deg);
+    }
+
+    .modal-title {
+      margin: 0 0 18px;
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+      text-align: center;
+      color: var(--main);
+      animation: slideInDown 0.4s ease-out 0.1s both;
+    }
+
+    .modal-qr {
+      display: block;
+      margin: 0 auto 12px;
+      width: 220px;
+      height: 220px;
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px;
+      animation: flip 0.6s ease-out 0.2s;
+    }
+
+    .modal-caption {
+      margin: 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+      animation: fadeIn 0.4s ease-out 0.4s both;
+    }
+
+    .hide-on-mobile { display: inline-block; }
+
+    @media (max-width: 700px) {
+      .card {
+        padding: 16px 18px 16px 16px;
+        min-height: 96px;
+      }
+
+      .brand-box {
+        gap: 12px;
+      }
+
+      .shop-logo {
+        width: 68px;
+        height: 40px;
+      }
+
+      .shop-name {
+        font-size: 1.8rem;
+      }
+
+      .theme-toggle {
+        right: 10px;
+      }
+
+      .hide-on-mobile {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand" aria-label="Potraviny">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="18" r="1.6"></circle>
+            <circle cx="17" cy="18" r="1.6"></circle>
+            <path d="M3 4h2l2.5 10.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.75L19 7H6"></path>
+          </svg>
+        </span>
+        <span>Potraviny</span>
+      </div>
+
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Prepni tmavý režim">
+        <span class="dot"></span>
+        <span id="themeLabel">Tmavý mód</span>
+      </button>
+    </div>
+
+    <div id="storeList" class="list"></div>
+  </div>
+
+  <script>
+    const data = [
+      {
+        category: "🛒 Potraviny",
+        stores: [
+          { name: "Kaufland", logo: "K", accent: "blue" },
+          { name: "Tesco", logo: "T", accent: "blue" },
+          { name: "Lidl", logo: "L", accent: "blue" },
+          { name: "BILLA", logo: "B", accent: "red" },
+          { name: "COOP Jednota", logo: "CJ", accent: "green" },
+          { name: "Terno", logo: "T", accent: "purple" },
+          { name: "KRAJ", logo: "K", accent: "orange" },
+          { name: "Fresh", logo: "F", accent: "green" },
+          { name: "Koruna", logo: "K", accent: "red" },
+          { name: "CBA", logo: "C", accent: "teal" },
+          { name: "Môj obchod", logo: "M", accent: "cyan" },
+          { name: "METRO", logo: "M", accent: "grey" },
+          { name: "YEME", logo: "Y", accent: "amber" }
+        ]
+      },
+      {
+        category: "🧴 Drogéria, lekárne, kozmetika",
+        stores: [
+          { name: "dm drogerie markt", logo: "dm", accent: "cyan" },
+          { name: "Teta", logo: "T", accent: "red" },
+          { name: "101 Drogéria", logo: "101", accent: "blue" },
+          { name: "Dr. Max", logo: "DM", accent: "green" },
+          { name: "BENU", logo: "B", accent: "blue" },
+          { name: "Pilulka", logo: "P", accent: "orange" },
+          { name: "Notino", logo: "N", accent: "purple" },
+          { name: "FAnn Parfumérie", logo: "F", accent: "pink" },
+          { name: "Douglas", logo: "D", accent: "purple" }
+        ]
+      },
+      {
+        category: "👕 Móda",
+        stores: [
+          { name: "H&M", logo: "H&M", accent: "black" },
+          { name: "Reserved", logo: "R", accent: "orange" },
+          { name: "Cropp", logo: "C", accent: "pink" },
+          { name: "House", logo: "H", accent: "amber" },
+          { name: "Sinsay", logo: "S", accent: "green" },
+          { name: "Mohito", logo: "M", accent: "blue" },
+          { name: "Zara", logo: "Z", accent: "red" },
+          { name: "Bershka", logo: "B", accent: "orange" },
+          { name: "Pull&Bear", logo: "P", accent: "green" },
+          { name: "Stradivarius", logo: "S", accent: "red" },
+          { name: "C&A", logo: "C&A", accent: "blue" },
+          { name: "New Yorker", logo: "N", accent: "pink" },
+          { name: "Takko", logo: "T", accent: "orange" },
+          { name: "Deichmann", logo: "D", accent: "cyan" },
+          { name: "CCC", logo: "C", accent: "red" },
+          { name: "Humanic", logo: "H", accent: "blue" }
+        ]
+      },
+      {
+        category: "👟 Obuv, šport a dom",
+        stores: [
+          { name: "Baťa", logo: "B", accent: "red" },
+          { name: "Sportisimo", logo: "S", accent: "green" },
+          { name: "Decathlon", logo: "D", accent: "red" },
+          { name: "EXIsport", logo: "E", accent: "blue" },
+          { name: "Intersport", logo: "I", accent: "green" },
+          { name: "4F", logo: "4F", accent: "orange" },
+          { name: "adidas", logo: "A", accent: "grey" },
+          { name: "Nike", logo: "N", accent: "black" },
+          { name: "Puma", logo: "P", accent: "red" },
+          { name: "Under Armour", logo: "UA", accent: "blue" },
+          { name: "Footshop", logo: "F", accent: "orange" },
+          { name: "KEA", logo: "K", accent: "blue" },
+          { name: "JYSK", logo: "J", accent: "blue" },
+          { name: "Möbelix", logo: "M", accent: "green" },
+          { name: "XXXLutz", logo: "X", accent: "orange" },
+          { name: "Kinekus", logo: "K", accent: "teal" },
+          { name: "Mountfield", logo: "M", accent: "green" },
+          { name: "Hornbach", logo: "H", accent: "orange" },
+          { name: "OBI", logo: "O", accent: "red" },
+          { name: "Planeo", logo: "P", accent: "blue" },
+          { name: "Datart", logo: "D", accent: "grey" },
+          { name: "NAY", logo: "N", accent: "purple" },
+          { name: "Alza", logo: "A", accent: "blue" }
+        ]
+      },
+      {
+        category: "🐶 Zvieratá",
+        stores: [
+          { name: "Super zoo", logo: "SZ", accent: "orange" }
+        ]
+      },
+      {
+        category: "⛽ Benzínky",
+        stores: [
+          { name: "Slovnaft", logo: "S", accent: "cyan" },
+          { name: "OMV", logo: "O", accent: "amber" },
+          { name: "Shell", logo: "S", accent: "yellow" },
+          { name: "ORLEN", logo: "O", accent: "red" },
+          { name: "Tchibo", logo: "T", accent: "teal" }
+        ]
+      }
+    ];
+
+    const storeList = document.getElementById("storeList");
+    const themeToggle = document.getElementById("themeToggle");
+    const themeLabel = document.getElementById("themeLabel");
+
+    function brandClass(name) {
+      const n = name.toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .replace(/\s+/g, "");
+      return n;
+    }
+
+    function renderCards() {
+      storeList.innerHTML = "";
+
+      data.forEach(section => {
+        const sectionWrap = document.createElement("div");
+        sectionWrap.className = "section";
+
+        const title = document.createElement("h2");
+        title.className = "section-header";
+        title.textContent = section.category;
+        sectionWrap.appendChild(title);
+
+        section.stores.forEach(shop => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.setAttribute("data-accent", shop.accent || "blue");
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "button");
+          card.setAttribute("aria-label", `Zobraziť QR kód pre ${shop.name}`);
+
+          const brandBox = document.createElement("div");
+          brandBox.className = "brand-box";
+
+          const logo = document.createElement("div");
+          logo.className = "shop-logo " + brandClass(shop.name);
+          logo.innerHTML = `<span>${shop.logo}</span>`;
+
+          const name = document.createElement("div");
+          name.className = "shop-name";
+          name.textContent = shop.name;
+
+          brandBox.appendChild(logo);
+          brandBox.appendChild(name);
+
+          const badge = document.createElement("div");
+          badge.className = "badge";
+          card.appendChild(badge);
+          card.appendChild(brandBox);
+
+          card.addEventListener("click", () => openQrModal(shop.name));
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openQrModal(shop.name);
+            }
+          });
+
+          sectionWrap.appendChild(card);
+        });
+
+        storeList.appendChild(sectionWrap);
+      });
+    }
+
+    function openQrModal(shopName) {
+      const modal = document.createElement("div");
+      modal.className = "modal-backdrop";
+
+      const panel = document.createElement("div");
+      panel.className = "modal-panel";
+
+      const close = document.createElement("button");
+      close.className = "modal-close";
+      close.textContent = "✕";
+      close.setAttribute("aria-label", "Zavrieť");
+
+      const title = document.createElement("h3");
+      title.className = "modal-title";
+      title.textContent = shopName;
+
+      const qr = document.createElement("img");
+      const encoded = encodeURIComponent(`https://example.com/${shopName.replace(/\s+/g, "-").toLowerCase()}`);
+      qr.className = "modal-qr";
+      qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encoded}`;
+      qr.alt = `QR kód pre ${shopName}`;
+
+      const caption = document.createElement("p");
+      caption.className = "modal-caption";
+      caption.textContent = "Skenovať kľúčom do aplikácie";
+
+      close.addEventListener("click", () => {
+        modal.style.animation = "fadeIn 0.3s ease-out reverse";
+        setTimeout(() => modal.remove(), 300);
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.animation = "fadeIn 0.3s ease-out reverse";
+          setTimeout(() => modal.remove(), 300);
+        }
+      });
+
+      // Close on Escape key
+      const escapeHandler = (e) => {
+        if (e.key === "Escape") {
+          close.click();
+          document.removeEventListener("keydown", escapeHandler);
+        }
+      };
+      document.addEventListener("keydown", escapeHandler);
+
+      panel.appendChild(close);
+      panel.appendChild(title);
+      panel.appendChild(qr);
+      panel.appendChild(caption);
+      modal.appendChild(panel);
+      document.body.appendChild(modal);
+
+      // Auto-close after 5 seconds (optional)
+      // setTimeout(() => close.click(), 5000);
+    }
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      document.body.classList.toggle("dark", isDark);
+      themeLabel.textContent = isDark ? "Svetlý mód" : "Tmavý mód";
+      localStorage.setItem("theme", theme);
+    }
+
+    const savedTheme = localStorage.getItem("theme") || "light";
+    applyTheme(savedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const dot = themeToggle.querySelector(".dot");
+      dot.style.animation = "spin 0.4s ease-in-out";
+      setTimeout(() => {
+        dot.style.animation = "none";
+      }, 400);
+      
+      const next = document.body.classList.contains("dark") ? "light" : "dark";
+      applyTheme(next);
+    });
+
+    renderCards();
+
+    // Ripple effect on card click
+    document.addEventListener("click", (e) => {
+      const card = e.target.closest(".card");
+      if (card) {
+        const ripple = document.createElement("span");
+        ripple.style.position = "absolute";
+        ripple.style.borderRadius = "50%";
+        ripple.style.background = "rgba(59, 130, 246, 0.3)";
+        ripple.style.pointerEvents = "none";
+        ripple.style.animation = "rippleAnimation 0.6s ease-out";
+        
+        const rect = card.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + "px";
+        ripple.style.left = x + "px";
+        ripple.style.top = y + "px";
+        
+        const style = document.createElement("style");
+        if (!document.querySelector("style[data-ripple]")) {
+          style.setAttribute("data-ripple", "true");
+          style.textContent = `
+            @keyframes rippleAnimation {
+              from {
+                transform: scale(0);
+                opacity: 1;
+              }
+              to {
+                transform: scale(1);
+                opacity: 0;
+              }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+        
+        card.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      }
+    });
+  </script>
+</body>
+</html>
