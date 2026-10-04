@@ -321,6 +321,24 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1);
       text-transform: uppercase;
       animation: scaleIn 0.5s ease-out 0.3s both;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #dfeaf7, #e9effa);
+    }
+
+    .shop-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .shop-logo span {
+      font-size: 0.78rem;
+      transform: scale(0.9);
+      display: inline-block;
     }
 
     .shop-name {
@@ -415,12 +433,6 @@
     .shop-logo.orlen { background: linear-gradient(135deg,#ef4444,#dc2626); }
     .shop-logo.tchibo { background: linear-gradient(135deg,#14b8a6,#0f766e); }
 
-    .shop-logo span {
-      font-size: 0.78rem;
-      transform: scale(0.9);
-      display: inline-block;
-    }
-
     .card .badge {
       position: absolute;
       right: 18px;
@@ -434,7 +446,6 @@
       z-index: 0;
     }
 
-    /* Modal Animations */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -569,82 +580,82 @@
       {
         category: "🛒 Potraviny",
         stores: [
-          { name: "Kaufland", logo: "K", accent: "blue" },
-          { name: "Tesco", logo: "T", accent: "blue" },
-          { name: "Lidl", logo: "L", accent: "blue" },
-          { name: "BILLA", logo: "B", accent: "red" },
-          { name: "COOP Jednota", logo: "CJ", accent: "green" },
-          { name: "Terno", logo: "T", accent: "purple" },
-          { name: "KRAJ", logo: "K", accent: "orange" },
-          { name: "Fresh", logo: "F", accent: "green" },
-          { name: "Koruna", logo: "K", accent: "red" },
-          { name: "CBA", logo: "C", accent: "teal" },
+          { name: "Kaufland", logo: "K", accent: "blue", logoUrl: "https://logo.clearbit.com/kaufland.de" },
+          { name: "Tesco", logo: "T", accent: "blue", logoUrl: "https://logo.clearbit.com/tesco.com" },
+          { name: "Lidl", logo: "L", accent: "blue", logoUrl: "https://logo.clearbit.com/lidl.de" },
+          { name: "BILLA", logo: "B", accent: "red", logoUrl: "https://logo.clearbit.com/billa.at" },
+          { name: "COOP Jednota", logo: "CJ", accent: "green", logoUrl: "https://logo.clearbit.com/coop.sk" },
+          { name: "Terno", logo: "T", accent: "purple", logoUrl: "https://logo.clearbit.com/terno.sk" },
+          { name: "KRAJ", logo: "K", accent: "orange", logoUrl: "https://logo.clearbit.com/kraj.sk" },
+          { name: "Fresh", logo: "F", accent: "green", logoUrl: "https://logo.clearbit.com/freshmarket.sk" },
+          { name: "Koruna", logo: "K", accent: "red", logoUrl: "https://logo.clearbit.com/koruna.sk" },
+          { name: "CBA", logo: "C", accent: "teal", logoUrl: "https://logo.clearbit.com/cba.sk" },
           { name: "Môj obchod", logo: "M", accent: "cyan" },
-          { name: "METRO", logo: "M", accent: "grey" },
+          { name: "METRO", logo: "M", accent: "grey", logoUrl: "https://logo.clearbit.com/metro.com" },
           { name: "YEME", logo: "Y", accent: "amber" }
         ]
       },
       {
         category: "🧴 Drogéria, lekárne, kozmetika",
         stores: [
-          { name: "dm drogerie markt", logo: "dm", accent: "cyan" },
-          { name: "Teta", logo: "T", accent: "red" },
+          { name: "dm drogerie markt", logo: "dm", accent: "cyan", logoUrl: "https://logo.clearbit.com/dm.de" },
+          { name: "Teta", logo: "T", accent: "red", logoUrl: "https://logo.clearbit.com/teta.sk" },
           { name: "101 Drogéria", logo: "101", accent: "blue" },
-          { name: "Dr. Max", logo: "DM", accent: "green" },
-          { name: "BENU", logo: "B", accent: "blue" },
+          { name: "Dr. Max", logo: "DM", accent: "green", logoUrl: "https://logo.clearbit.com/drmax.sk" },
+          { name: "BENU", logo: "B", accent: "blue", logoUrl: "https://logo.clearbit.com/benu.sk" },
           { name: "Pilulka", logo: "P", accent: "orange" },
-          { name: "Notino", logo: "N", accent: "purple" },
+          { name: "Notino", logo: "N", accent: "purple", logoUrl: "https://logo.clearbit.com/notino.sk" },
           { name: "FAnn Parfumérie", logo: "F", accent: "pink" },
-          { name: "Douglas", logo: "D", accent: "purple" }
+          { name: "Douglas", logo: "D", accent: "purple", logoUrl: "https://logo.clearbit.com/douglas.de" }
         ]
       },
       {
         category: "👕 Móda",
         stores: [
-          { name: "H&M", logo: "H&M", accent: "black" },
-          { name: "Reserved", logo: "R", accent: "orange" },
+          { name: "H&M", logo: "H&M", accent: "black", logoUrl: "https://logo.clearbit.com/hm.com" },
+          { name: "Reserved", logo: "R", accent: "orange", logoUrl: "https://logo.clearbit.com/reserved.com" },
           { name: "Cropp", logo: "C", accent: "pink" },
           { name: "House", logo: "H", accent: "amber" },
           { name: "Sinsay", logo: "S", accent: "green" },
           { name: "Mohito", logo: "M", accent: "blue" },
-          { name: "Zara", logo: "Z", accent: "red" },
+          { name: "Zara", logo: "Z", accent: "red", logoUrl: "https://logo.clearbit.com/zara.com" },
           { name: "Bershka", logo: "B", accent: "orange" },
           { name: "Pull&Bear", logo: "P", accent: "green" },
           { name: "Stradivarius", logo: "S", accent: "red" },
           { name: "C&A", logo: "C&A", accent: "blue" },
           { name: "New Yorker", logo: "N", accent: "pink" },
-          { name: "Takko", logo: "T", accent: "orange" },
-          { name: "Deichmann", logo: "D", accent: "cyan" },
-          { name: "CCC", logo: "C", accent: "red" },
+          { name: "Takko", logo: "T", accent: "orange", logoUrl: "https://logo.clearbit.com/takko.com" },
+          { name: "Deichmann", logo: "D", accent: "cyan", logoUrl: "https://logo.clearbit.com/deichmann.com" },
+          { name: "CCC", logo: "C", accent: "red", logoUrl: "https://logo.clearbit.com/ccc.eu" },
           { name: "Humanic", logo: "H", accent: "blue" }
         ]
       },
       {
         category: "👟 Obuv, šport a dom",
         stores: [
-          { name: "Baťa", logo: "B", accent: "red" },
+          { name: "Baťa", logo: "B", accent: "red", logoUrl: "https://logo.clearbit.com/bata.com" },
           { name: "Sportisimo", logo: "S", accent: "green" },
-          { name: "Decathlon", logo: "D", accent: "red" },
+          { name: "Decathlon", logo: "D", accent: "red", logoUrl: "https://logo.clearbit.com/decathlon.com" },
           { name: "EXIsport", logo: "E", accent: "blue" },
           { name: "Intersport", logo: "I", accent: "green" },
           { name: "4F", logo: "4F", accent: "orange" },
-          { name: "adidas", logo: "A", accent: "grey" },
-          { name: "Nike", logo: "N", accent: "black" },
-          { name: "Puma", logo: "P", accent: "red" },
-          { name: "Under Armour", logo: "UA", accent: "blue" },
-          { name: "Footshop", logo: "F", accent: "orange" },
-          { name: "KEA", logo: "K", accent: "blue" },
-          { name: "JYSK", logo: "J", accent: "blue" },
+          { name: "adidas", logo: "A", accent: "grey", logoUrl: "https://logo.clearbit.com/adidas.com" },
+          { name: "Nike", logo: "N", accent: "black", logoUrl: "https://logo.clearbit.com/nike.com" },
+          { name: "Puma", logo: "P", accent: "red", logoUrl: "https://logo.clearbit.com/puma.com" },
+          { name: "Under Armour", logo: "UA", accent: "blue", logoUrl: "https://logo.clearbit.com/underarmour.com" },
+          { name: "Footshop", logo: "F", accent: "orange", logoUrl: "https://logo.clearbit.com/footshop.com" },
+          { name: "KEA", logo: "K", accent: "blue", logoUrl: "https://logo.clearbit.com/ikea.com" },
+          { name: "JYSK", logo: "J", accent: "blue", logoUrl: "https://logo.clearbit.com/jysk.com" },
           { name: "Möbelix", logo: "M", accent: "green" },
           { name: "XXXLutz", logo: "X", accent: "orange" },
           { name: "Kinekus", logo: "K", accent: "teal" },
           { name: "Mountfield", logo: "M", accent: "green" },
-          { name: "Hornbach", logo: "H", accent: "orange" },
-          { name: "OBI", logo: "O", accent: "red" },
+          { name: "Hornbach", logo: "H", accent: "orange", logoUrl: "https://logo.clearbit.com/hornbach.de" },
+          { name: "OBI", logo: "O", accent: "red", logoUrl: "https://logo.clearbit.com/obi.de" },
           { name: "Planeo", logo: "P", accent: "blue" },
-          { name: "Datart", logo: "D", accent: "grey" },
+          { name: "Datart", logo: "D", accent: "grey", logoUrl: "https://logo.clearbit.com/datart.cz" },
           { name: "NAY", logo: "N", accent: "purple" },
-          { name: "Alza", logo: "A", accent: "blue" }
+          { name: "Alza", logo: "A", accent: "blue", logoUrl: "https://logo.clearbit.com/alza.sk" }
         ]
       },
       {
@@ -656,11 +667,11 @@
       {
         category: "⛽ Benzínky",
         stores: [
-          { name: "Slovnaft", logo: "S", accent: "cyan" },
-          { name: "OMV", logo: "O", accent: "amber" },
-          { name: "Shell", logo: "S", accent: "yellow" },
-          { name: "ORLEN", logo: "O", accent: "red" },
-          { name: "Tchibo", logo: "T", accent: "teal" }
+          { name: "Slovnaft", logo: "S", accent: "cyan", logoUrl: "https://logo.clearbit.com/slovnaft.sk" },
+          { name: "OMV", logo: "O", accent: "amber", logoUrl: "https://logo.clearbit.com/omv.com" },
+          { name: "Shell", logo: "S", accent: "yellow", logoUrl: "https://logo.clearbit.com/shell.com" },
+          { name: "ORLEN", logo: "O", accent: "red", logoUrl: "https://logo.clearbit.com/orlen.pl" },
+          { name: "Tchibo", logo: "T", accent: "teal", logoUrl: "https://logo.clearbit.com/tchibo.com" }
         ]
       }
     ];
@@ -674,6 +685,14 @@
         .replace(/[^a-z0-9]/g, "")
         .replace(/\s+/g, "");
       return n;
+    }
+
+    function logoMarkup(shop) {
+      if (shop.logoUrl) {
+        return `<img src="${shop.logoUrl}" alt="${shop.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${shop.logo}</span>'" />`;
+      }
+
+      return `<span>${shop.logo}</span>`;
     }
 
     function renderCards() {
@@ -701,7 +720,7 @@
 
           const logo = document.createElement("div");
           logo.className = "shop-logo " + brandClass(shop.name);
-          logo.innerHTML = `<span>${shop.logo}</span>`;
+          logo.innerHTML = logoMarkup(shop);
 
           const name = document.createElement("div");
           name.className = "shop-name";
@@ -768,7 +787,6 @@
         }
       });
 
-      // Close on Escape key
       const escapeHandler = (e) => {
         if (e.key === "Escape") {
           close.click();
@@ -783,9 +801,6 @@
       panel.appendChild(caption);
       modal.appendChild(panel);
       document.body.appendChild(modal);
-
-      // Auto-close after 5 seconds (optional)
-      // setTimeout(() => close.click(), 5000);
     }
 
     function applyTheme(theme) {
@@ -804,14 +819,13 @@
       setTimeout(() => {
         dot.style.animation = "none";
       }, 400);
-      
+
       const next = document.body.classList.contains("dark") ? "light" : "dark";
       applyTheme(next);
     });
 
     renderCards();
 
-    // Ripple effect on card click
     document.addEventListener("click", (e) => {
       const card = e.target.closest(".card");
       if (card) {
@@ -821,18 +835,18 @@
         ripple.style.background = "rgba(59, 130, 246, 0.3)";
         ripple.style.pointerEvents = "none";
         ripple.style.animation = "rippleAnimation 0.6s ease-out";
-        
+
         const rect = card.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         const x = e.clientX - rect.left - size / 2;
         const y = e.clientY - rect.top - size / 2;
-        
+
         ripple.style.width = ripple.style.height = size + "px";
         ripple.style.left = x + "px";
         ripple.style.top = y + "px";
-        
-        const style = document.createElement("style");
+
         if (!document.querySelector("style[data-ripple]")) {
+          const style = document.createElement("style");
           style.setAttribute("data-ripple", "true");
           style.textContent = `
             @keyframes rippleAnimation {
@@ -848,7 +862,7 @@
           `;
           document.head.appendChild(style);
         }
-        
+
         card.appendChild(ripple);
         setTimeout(() => ripple.remove(), 600);
       }
